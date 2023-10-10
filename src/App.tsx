@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {TodoList} from "src/components/TodoList";
 
@@ -7,27 +7,50 @@ export type TaskType = {
     isDone: boolean,
     title: string
 }
+export type FilterType = 'all' | 'active' | 'completed'
 
 function App() {
 
     const todoTitle_1 = 'What to buy'
-    const todoTitle_2 = 'What to learn'
 
-    const tasks_1:Array<TaskType> = [
+
+    const [tasks, setTasks] = useState<TaskType[]>([
         {id: 1, isDone: false, title: 'Milk'},
         {id: 2, isDone: false, title: 'Bread'},
         {id: 3, isDone: true, title: 'Coffee'},
-    ]
-    const tasks_2:Array<TaskType> = [
-        {id: 4, isDone: true, title: 'Js'},
-        {id: 5, isDone: false, title: 'Ts'},
-        {id: 6, isDone: true, title: 'React'},
-    ]
+    ])
+    const [filter, setFilter] = useState<FilterType>('all')
+
+    const tasksForTodolist: TaskType[] = getFilteredTasks(tasks, filter)
+
+    function getFilteredTasks(tasks: TaskType[], filter: FilterType) {
+        switch (filter) {
+            case "active":
+                return tasks.filter(t => !t.isDone)
+            case "completed":
+                return tasks.filter(t => t.isDone)
+            default:
+                return tasks
+        }
+    }
+
+    const removeTask = (taskId: number) => {
+        setTasks(tasks.filter(t => t.id !== taskId))
+    }
+    const changeFilter = (filter: FilterType) => {
+        setFilter(filter)
+    }
+    const changeIsDone = (isDone: boolean, taskId: number) => {
+        setTasks(tasks.map(t => t.id === taskId ? {...t, isDone: isDone} : t))
+    }
 
     return (
         <div className="App">
-            <TodoList title={todoTitle_1} tasks={tasks_1}/>
-            <TodoList title={todoTitle_2} tasks={tasks_2}/>
+            <TodoList title={todoTitle_1}
+                      tasks={tasksForTodolist}
+                      removeTask={removeTask}
+                      changeFilter={changeFilter}
+                      changeIsDone={changeIsDone}/>
         </div>
     );
 }
