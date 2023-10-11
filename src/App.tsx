@@ -13,13 +13,12 @@ function App() {
 
     const todoTitle_1 = 'What to buy'
 
-
+    const [filter, setFilter] = useState<FilterType>('all')
     const [tasks, setTasks] = useState<TaskType[]>([
         {id: 1, isDone: false, title: 'Milk'},
         {id: 2, isDone: false, title: 'Bread'},
         {id: 3, isDone: true, title: 'Coffee'},
     ])
-    const [filter, setFilter] = useState<FilterType>('all')
 
     const tasksForTodolist: TaskType[] = getFilteredTasks(tasks, filter)
 
