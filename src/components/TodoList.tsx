@@ -6,7 +6,7 @@ type TodoListPropsType = {
     tasks: Array<TaskType>,
     removeTask: (taskId: number) => void,
     changeFilter: (filter: FilterType) => void,
-    changeIsDone: (isDone: boolean, taskId: number) => void
+    changeIsDone: (isDone: boolean, taskId: number) => void,
 }
 
 export const TodoList: FC<TodoListPropsType> = (
@@ -27,7 +27,6 @@ export const TodoList: FC<TodoListPropsType> = (
 
         const onClickRemoveTaskHandler = () => removeTask(t.id)
         const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => changeIsDone(event.currentTarget.checked, t.id)
-
 
         return (
             <li key={t.id}>
